@@ -8,6 +8,7 @@ local CreatorText = "By noirexe"
 -- Scripts data
 local scripts = {
 ["Main Scripts"] = {
+["Indo-Hangout Beta"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Indo-hangout/test.lua",
 ["Mt.Papua"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Papua.lua",
 ["Mt.Bohong"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Bohong.lua",
 ["Mt.Bayii"]  = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Bayi.lua",
