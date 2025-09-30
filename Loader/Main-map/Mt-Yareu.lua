@@ -7,17 +7,17 @@ local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
 -- checkpoint
 local CheckPoints = {
-    Spawn = {x = 917, y = 56, z = 141},
-    ["Pos - 1"] = {x = 1157, y = 164, z = -452},
-    ["Pos - 2"] = {x = 926, y = 274, z = -1016},
-    ["Pos - 3"] = {x = 591, y = 662, z = -895},
-    ["Pos - 4"] = {x = 47, y = 807, z = -998},
-    ["Pos - 5"] = {x = -33, y = 905, z = -1141},
-    ["Pos - 6"] = {x = -691, y = 889, z = -1381},
-    ["Pos - 7"] = {x = -652, y = 898, z = -1777},
-    ["Pos - 8"] = {x = -1195, y = 994, z = -1738},
-    ["Pos - 9"] = {x = -1333, y = 898, z = -1157},
-    Puncak = {x = -971, y = 1306, z = -1473}
+    Spawn = {x = -819, y = 37, z = -226},
+    ["Pos - 1"] = {x = -124, y = 127, z = -53},
+    ["Pos - 2"] = {x = -172, y = 161, z = 496},
+    ["Pos - 3"] = {x = -218, y = 100, z = 754},
+    ["Pos - 4"] = {x = -666, y = 316, z = 978},
+    ["Pos - 5"] = {x = -893, y = 452, z = 1064},
+    ["Pos - 6"] = {x = -1125, y = 528, z = 1056},
+    ["Pos - 7"] = {x = -1140, y = 526, z = 1305},
+    ["Pos - 8"] = {x = -1170, y = 520, z = 1841},
+    ["Pos - 9"] = {x = -872, y = 696, z = 1810},
+    Puncak = {x = -868, y = 811, z = 1801}
 }
 
 local isAutoTeleporting = false
@@ -258,6 +258,214 @@ local function CreateGUI()
             Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
             
             -- Hover effect untuk tombol manual
+            btn.MouseEnter:Connect(function()
+                btn.BackgroundColor3 = Color3.fromRGB(100, 140, 240)
+            end)
+            btn.MouseLeave:Connect(function()
+                btn.BackgroundColor3 = Colors.Primary
+            end)
+
+            btn.MouseButton1Click:Connect(function()
+                local cp = CheckPoints[checkpointName]
+                humanoidRootPart.CFrame = CFrame.new(cp.x, cp.y, cp.z)
+            end)
+        end
+    end
+
+    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        scrollFrame.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 10)
+    end)
+
+    -- Container untuk status dan Discord button
+    local bottomContainer = Instance.new("Frame")
+    bottomContainer.Size = UDim2.new(1, -106, 0, 30)
+    bottomContainer.Position = UDim2.new(0, 180, 1, -29)
+    bottomContainer.BackgroundTransparency = 1
+    bottomContainer.Parent = contentFrame
+
+    -- status script dengan styling yang lebih baik
+    local statusContainer = Instance.new("Frame")
+    statusContainer.Size = UDim2.new(0.6, -5, 1, 0)
+    statusContainer.Position = UDim2.new(0, 0, 0, 0)
+    statusContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+    statusContainer.BorderSizePixel = 0
+    statusContainer.Parent = bottomContainer
+    Instance.new("UICorner", statusContainer).CornerRadius = UDim.new(0, 8)
+
+    local statusText = Instance.new("TextLabel")
+    statusText.Size = UDim2.new(1, -10, 1, 0)
+    statusText.Position = UDim2.new(0, 5, 0, 0)
+    statusText.BackgroundTransparency = 1
+    statusText.Text = "Status: Ready"
+    statusText.TextColor3 = Colors.Secondary
+    statusText.TextSize = 13
+    statusText.Font = Enum.Font.Gotham
+    statusText.TextXAlignment = Enum.TextXAlignment.Left
+    statusText.Parent = statusContainer
+
+    -- Discord button di sebelah status
+    local discordBtn = Instance.new("TextButton")
+    discordBtn.Size = UDim2.new(0.4, -5, 1, 0)
+    discordBtn.Position = UDim2.new(0.6, 5, 0, 0)
+    discordBtn.Text = "Discord"
+    discordBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242) -- Warna Discord
+    discordBtn.TextColor3 = Colors.Text
+    discordBtn.Font = Enum.Font.GothamBold
+    discordBtn.TextSize = 13
+    discordBtn.Parent = bottomContainer
+    Instance.new("UICorner", discordBtn).CornerRadius = UDim.new(0, 8)
+
+    -- Hover effect untuk Discord button
+    discordBtn.MouseEnter:Connect(function()
+        discordBtn.BackgroundColor3 = Color3.fromRGB(108, 121, 262)
+    end)
+    discordBtn.MouseLeave:Connect(function()
+        discordBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+    end)
+
+    -- Event handler untuk Discord button
+    discordBtn.MouseButton1Click:Connect(function()
+        local discordLink = "https://discord.gg/RpYcMdzzwd"
+        
+        -- Copy ke clipboard jika memungkinkan
+        pcall(function()
+            setclipboard(discordLink)
+        end)
+        
+        -- Tampilkan notifikasi
+        statusText.Text = "Discord link copied!"
+        statusText.TextColor3 = Colors.Primary
+        
+        -- Reset status setelah beberapa detik
+        task.wait(3)
+        if isAutoTeleporting then
+            statusText.Text = "Status: Running..."
+            statusText.TextColor3 = Colors.Warning
+        else
+            statusText.Text = "Status: Ready"
+            statusText.TextColor3 = Colors.Secondary
+        end
+    end)
+
+    -- Event handler close & minimize
+    closeBtn.MouseButton1Click:Connect(function()
+        screenGui:Destroy()
+        isAutoTeleporting = false
+    end)
+
+    miniBtn.MouseButton1Click:Connect(function()
+        frame.Visible = false
+        bubbleBtn.Visible = true
+    end)
+
+    bubbleBtn.MouseButton1Click:Connect(function()
+        frame.Visible = true
+        bubbleBtn.Visible = false
+    end)
+
+    -- Update delay ketika textbox berubah
+    delayBox.FocusLost:Connect(function(enterPressed)
+        local val = tonumber(delayBox.Text)
+        if val and val > 0 then
+            currentDelay = val
+        else
+            delayBox.Text = tostring(currentDelay)
+        end
+    end)
+
+    return {
+        toggleBtn = toggleBtn,
+        respawnToggleBtn = respawnToggleBtn,
+        statusText = statusText
+    }
+end
+
+local GUI = CreateGUI()
+
+-- teleport function 
+local function EnsureCharacterReady()
+    character = player.Character or player.CharacterAdded:Wait()
+    humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    return humanoidRootPart
+end
+
+local function TeleportToCheckpoint(name)
+    local checkpoint = CheckPoints[name]
+    if not checkpoint then return false end
+    local rootPart = EnsureCharacterReady()
+    rootPart.CFrame = CFrame.new(checkpoint.x, checkpoint.y, checkpoint.z)
+    return true
+end
+
+-- teleport loop
+local function AutoTeleport()
+    while isAutoTeleporting and RunService.Heartbeat:Wait() do
+        for _, checkpoint in ipairs(teleportSequence) do
+            if not isAutoTeleporting then break end
+            
+            -- Gunakan nama checkpoint langsung untuk status
+            GUI.statusText.Text = "Status: Teleport ke " .. checkpoint
+            GUI.statusText.TextColor3 = Colors.Warning
+            TeleportToCheckpoint(checkpoint)
+            
+            -- Cek jika sampai di Puncak dan Auto Respawn aktif
+            if checkpoint == "Puncak" and isAutoRespawnEnabled then
+                GUI.statusText.Text = "Status: Summit Reached, Auto respawn 2s"
+                GUI.statusText.TextColor3 = Colors.Danger
+                task.wait(2)
+                
+                -- Respawn karakter
+                character:BreakJoints()
+                GUI.statusText.Text = "Status: Respawn success"
+                task.wait(1)
+            else
+                for _ = 1, currentDelay do
+                    if not isAutoTeleporting then break end
+                    task.wait(1)
+                end
+            end
+        end
+    end
+    GUI.statusText.Text = "Status: Auto Teleport Berhenti"
+    GUI.statusText.TextColor3 = Colors.Danger
+    GUI.toggleBtn.Text = "Auto Teleport: ON"
+    GUI.toggleBtn.BackgroundColor3 = Colors.Secondary
+end
+
+-- start stop
+GUI.toggleBtn.MouseButton1Click:Connect(function()
+    if not isAutoTeleporting then
+        isAutoTeleporting = true
+        GUI.toggleBtn.Text = "Auto Teleport: OFF"
+        GUI.toggleBtn.BackgroundColor3 = Colors.Danger
+        task.spawn(AutoTeleport)
+    else
+        isAutoTeleporting = false
+    end
+end)
+
+-- Auto Respawn toggle
+GUI.respawnToggleBtn.MouseButton1Click:Connect(function()
+    isAutoRespawnEnabled = not isAutoRespawnEnabled
+    if isAutoRespawnEnabled then
+        GUI.respawnToggleBtn.Text = "Auto Respawn: ON"
+        GUI.respawnToggleBtn.BackgroundColor3 = Colors.Secondary
+    else
+        GUI.respawnToggleBtn.Text = "Auto Respawn: OFF"
+        GUI.respawnToggleBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 90)
+    end
+end)
+
+-- Respawn event
+player.CharacterAdded:Connect(function(newChar)
+    character = newChar
+    humanoidRootPart = newChar:WaitForChild("HumanoidRootPart")
+    GUI.statusText.Text = "Status: Respawn terdeteksi"
+    GUI.statusText.TextColor3 = Colors.Primary
+    isAutoTeleporting = false
+end)
+
+print("✅ XuKrost Hub Successfully loaded! have fun!")er effect untuk tombol manual
             btn.MouseEnter:Connect(function()
                 btn.BackgroundColor3 = Color3.fromRGB(100, 140, 240)
             end)
