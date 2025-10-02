@@ -9,19 +9,20 @@ local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 local CheckPoints = {
     Spawn = {x = 1113, y = 24, z = -43},
         ["Pos - 1"] = {x = 465, y = -65, z = 255},
-            ["Pos - 2"] = {x = 36, y = 103, z = 318},
+            ["Pos - 2"] = {x = 31, y = 106, z = 347},
                 ["Pos - 3"] = {x = -374, y = 263, z = 387},
                     ["Pos - 4"] = {x = -677, y = 383, z = 223},
-                ["Pos - 5"] = {x = -995, y = 528, z = 231},
-            ["Pos - 6"] = {x = -819, y = 595, z = -767},
-        ["Pos - 7"] = {x = -1530, y = 1011, z = -753},
+                    ["Pos - 5"] = {x = -995, y = 528, z = 231},
+                ["Pos - 6"] = {x = -853, y = 603, z = -703},
+            ["Pos - 7"] = {x = -1094, y = 844, z = -936},
+        ["Pos - 8"] = {x = -1398, y = 932, z = -779},
     Puncak = {x = -1704, y = 1261, z = -956}
 }
 
 local isAutoTeleporting = false
 local isAutoRespawnEnabled = false
 local currentDelay = 3
-local teleportSequence = {"Spawn", "Pos - 1", "Pos - 2", "Pos - 3", "Pos - 4", "Pos - 5", "Pos - 6", "Pos - 7", "Puncak"}
+local teleportSequence = {"Spawn", "Pos - 1", "Pos - 2", "Pos - 3", "Pos - 4", "Pos - 5", "Pos - 6", "Pos - 7", "Pos - 8", "Puncak"}
 
 -- Color scheme
 local Colors = {
