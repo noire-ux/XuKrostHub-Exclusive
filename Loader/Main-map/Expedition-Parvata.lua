@@ -12,7 +12,7 @@ local CheckPoints = {
             ["Pos - 2"] = {x = 131, y = 170, z = 567},
                 ["Pos - 3"] = {x = 714, y = 68, z = 584},
                     ["Pos - 4"] = {x = 1013, y = 56, z = 859},
-                        ["Pos - 5"] = {x = 893, y = 112, z = 1269},
+                    ["Pos - 5"] = {x = 893, y = 112, z = 1269},
                     ["Pos - 6"] = {x = 589, y = 46, z = 1308},
                 ["Pos - 7"] = {x = 451, y = 349, z = 1980},
             ["Pos - 8"] = {x = 417, y = 428, z = 2301},
@@ -23,7 +23,7 @@ local CheckPoints = {
 local isAutoTeleporting = false
 local isAutoRespawnEnabled = false
 local currentDelay = 3
-local teleportSequence = {"Spawn", "Pos - 1", "Pos - 2", "Pos - 3", "Pos - 4", "Pos -  5", "Pos - 6", "Pos - 7", "Pos - 8", "Pos - 9", "Puncak"}
+local teleportSequence = {"Spawn", "Pos - 1", "Pos - 2", "Pos - 3", "Pos - 4", "Pos - 5", "Pos - 6", "Pos - 7", "Pos - 8", "Pos - 9", "Puncak"}
 
 -- Color scheme
 local Colors = {

@@ -20,7 +20,7 @@ local CheckPoints = {
 local isAutoTeleporting = false
 local isAutoRespawnEnabled = false
 local currentDelay = 3
-local teleportSequence = {"Spawn", "Pos - 1", "Pos - 2", "Pos - 3", "Pos - 4", "Pos -  5", "Pos - 6", "Puncak"}
+local teleportSequence = {"Spawn", "Pos - 1", "Pos - 2", "Pos - 3", "Pos - 4", "Pos - 5", "Pos - 6", "Puncak"}
 
 -- Color scheme
 local Colors = {
