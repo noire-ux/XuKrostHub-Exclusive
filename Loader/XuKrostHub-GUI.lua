@@ -14,15 +14,19 @@ local scripts = {
 ["Player Info"] = {}, -- Tab baru untuk Player Info
 ["Main Scripts"] = {
 ["Free"] = {
-["Indo-Hangout Beta"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Indo-hangout/test.lua",
-["Mt.Sumbing"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Sumbing.lua",
+["Mt.Jawa"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Jawa.lua", 
+["Expedition-Parvata"]  = "https://github.com/noire-ux/XuKrostHub-Exclusive/blob/main/Loader/Main-map/Expedition-Parvata.lua", 
+["Mt.Ckptw"]  = "https://github.com/noire-ux/XuKrostHub-Exclusive/blob/main/Loader/Main-map/Mt-Ckptw.lua", 
+["Mt.Bohong"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Bohong.lua", 
+["Mt.Papua"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Papua.lua", 
 ["Mt.Hts"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Hts.lua"
 },
 ["VIP"] = {
-["Mt.Jawa"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Jawa.lua",
-["Mt.Malang"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Malang.lua",
-["Mt.Papua"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Papua.lua",
-["Mt.Bohong"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Bohong.lua",
+["Mt.Malang"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Malang.lua", 
+["Mt.Yahayuk"]  = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Yahayuk.lua", 
+["Mt.Atin"]  = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Atin.lua", 
+["Indo-Hangout Beta"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Indo-hangout/test.lua", 
+["Mt.Sumbing"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Sumbing.lua", 
 ["Mt.Bayii"]  = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Bayi.lua",
 ["Mt.Yareu"]  = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Yareu.lua"
 }
