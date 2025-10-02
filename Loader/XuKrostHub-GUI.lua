@@ -15,8 +15,8 @@ local scripts = {
 ["Main Scripts"] = {
 ["Free"] = {
 ["Mt.Jawa"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Jawa.lua", 
-["Expedition-Parvata"]  = "https://github.com/noire-ux/XuKrostHub-Exclusive/blob/main/Loader/Main-map/Expedition-Parvata.lua", 
-["Mt.Ckptw"]  = "https://github.com/noire-ux/XuKrostHub-Exclusive/blob/main/Loader/Main-map/Mt-Ckptw.lua", 
+["Expedition-Parvata"]  = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Expedition-Parvata.lua", 
+["Mt.Ckptw"]  = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Ckptw.lua", 
 ["Mt.Bohong"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Bohong.lua", 
 ["Mt.Papua"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Papua.lua", 
 ["Mt.Hts"] = "https://raw.githubusercontent.com/noire-ux/XuKrostHub-Exclusive/refs/heads/main/Loader/Main-map/Mt-Hts.lua"
@@ -575,6 +575,52 @@ local function getCurrentDateTime()
     return string.format("%02d/%02d/%04d", currentTime.day, currentTime.month, currentTime.year)
 end
 
+-- Fungsi untuk membuat button VIP Only di Extra Tools
+local function createVIPOnlyButton(parent, name, url)
+    local btn = Instance.new("TextButton", parent)
+    btn.Size = UDim2.new(1, 0, 0, 36)
+    btn.Text = name
+    btn.Font = Enum.Font.GothamSemibold
+    btn.TextSize = 14
+    btn.TextColor3 = Color3.new(1,1,1)
+    btn.BackgroundColor3 = Color3.fromRGB(80, 50, 120)  -- Warna ungu untuk VIP
+    btn.BorderSizePixel = 0
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0,6)
+    
+    -- Tambah badge VIP
+    local vipBadge = Instance.new("TextLabel", btn)
+    vipBadge.Size = UDim2.new(0, 25, 0, 15)
+    vipBadge.Position = UDim2.new(1, -27, 0, 2)
+    vipBadge.Text = "VIP"
+    vipBadge.TextColor3 = Color3.fromRGB(255, 215, 0)
+    vipBadge.BackgroundColor3 = Color3.fromRGB(40, 20, 60)
+    vipBadge.Font = Enum.Font.GothamBold
+    vipBadge.TextSize = 10
+    vipBadge.BorderSizePixel = 0
+    Instance.new("UICorner", vipBadge).CornerRadius = UDim.new(0,3)
+
+    btn.MouseButton1Click:Connect(function()
+        if not isVIP then
+            appendToConsole(">> ❌ ACCESS DENIED: " .. name .. " is VIP only!\n")
+            appendToConsole(">> 💡 Upgrade to VIP to access premium tools\n")
+            notify("VIP REQUIRED", "This tool is for VIP members only!", 4)
+            return
+        end
+        
+        appendToConsole(">> Loading " .. name .. "\n")
+        local ok, msg = fetchAndRun(url)
+        if ok then
+            appendToConsole(">> " .. name .. " loaded!\n")
+            notify("XuKrost Hub", name .. " success", 3)
+        else
+            appendToConsole(">> " .. name .. " failed: " .. tostring(msg) .. "\n")
+            notify("XuKrost Hub", name .. " failed: " .. tostring(msg), 5)
+        end
+    end)
+    
+    return btn
+end
+
 local function createTabContent(tabName, data)
     local offsetY = (tabName == "Player Info" or tabName == "Main Scripts" or tabName == "Extra Tools" or tabName == "Own Script" or tabName == "Console") and 65 or 120
     local contentFrame = Instance.new("Frame", mainFrame)
@@ -999,42 +1045,22 @@ local function createTabContent(tabName, data)
             end  
         end)  
           
-        -- Fly Button  
-        local flyBtn = Instance.new("TextButton", contentFrame)  
-        flyBtn.Size = UDim2.new(1, 0, 0, 36)  
-        flyBtn.Text = "Fly"  
-        flyBtn.Font = Enum.Font.GothamSemibold  
-        flyBtn.TextSize = 14  
-        flyBtn.TextColor3 = Color3.new(1,1,1)  
-        flyBtn.BackgroundColor3 = Color3.fromRGB(50,50,60)  
-        flyBtn.BorderSizePixel = 0  
-        Instance.new("UICorner", flyBtn).CornerRadius = UDim.new(0,6)  
+        -- Fly Button (VIP Only)
+        local flyBtn = createVIPOnlyButton(contentFrame, "Fly", "https://raw.githubusercontent.com/noirexe/GYkHTrZSc5W/refs/heads/main/sc-free-ko-dijual-awoakowk.lua")
           
-        flyBtn.MouseButton1Click:Connect(function()  
-            appendToConsole(">> Loading Fly Script...\n")  
-            local ok,msg = fetchAndRun("https://raw.githubusercontent.com/noirexe/GYkHTrZSc5W/refs/heads/main/sc-free-ko-dijual-awoakowk.lua")      
-            if ok then      
-                appendToConsole(">> Fly script loaded!\n")      
-                notify("XuKrost Hub", "Fly script success",3)      
-            else      
-                appendToConsole(">> Fly script failed: "..tostring(msg).."\n")      
-                notify("XuKrost Hub", "Fly script failed: "..tostring(msg),5)      
-            end      
-        end)
-
-        -- Remove Network Pause Button
-        local removeNetworkPauseBtn = Instance.new("TextButton", contentFrame)  
-        removeNetworkPauseBtn.Size = UDim2.new(1, 0, 0, 36)  
-        removeNetworkPauseBtn.Text = "Remove Network Pause"  
-        removeNetworkPauseBtn.Font = Enum.Font.GothamSemibold  
-        removeNetworkPauseBtn.TextSize = 14  
-        removeNetworkPauseBtn.TextColor3 = Color3.new(1,1,1)  
-        removeNetworkPauseBtn.BackgroundColor3 = Color3.fromRGB(50,50,60)  
-        removeNetworkPauseBtn.BorderSizePixel = 0  
-        Instance.new("UICorner", removeNetworkPauseBtn).CornerRadius = UDim.new(0,6)  
-          
-        removeNetworkPauseBtn.MouseButton1Click:Connect(function()  
-            appendToConsole(">> Removing Network Pause...\n")  
+        -- Remove Network Pause Button (VIP Only)
+        local removeNetworkPauseBtn = createVIPOnlyButton(contentFrame, "Remove Network Pause", "remove_network_pause_internal")
+        
+        -- Override click function untuk Remove Network Pause karena ini internal function
+        removeNetworkPauseBtn.MouseButton1Click:Connect(function()
+            if not isVIP then
+                appendToConsole(">> ❌ ACCESS DENIED: Remove Network Pause is VIP only!\n")
+                appendToConsole(">> 💡 Upgrade to VIP to access premium tools\n")
+                notify("VIP REQUIRED", "This tool is for VIP members only!", 4)
+                return
+            end
+            
+            appendToConsole(">> Removing Network Pause...\n")
             
             local success, result = removeNetworkPause()
             
