@@ -9,10 +9,10 @@ local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 local CheckPoints = {
     Spawn = {x = -959, y = 169, z = 874},
     ["Pos - 1"] = {x = -416, y = 249, z = 768},
-    ["Pos - 2"] = {x = -335, y = 388, z = 534},
-    ["Pos - 3"] = {x = 297, y = 430, z = 498},
-    ["Pos - 4"] = {x = 322, y = 490, z = 342},
-    ["Pos - 5"] = {x = 219, y = 314, z = -149},
+    ["Pos - 2"] = {x = -339, y = 388, z = 528},
+    ["Pos - 3"] = {x = 290, y = 430, z = 495},
+    ["Pos - 4"] = {x = 331, y = 490, z = 363},
+    ["Pos - 5"] = {x = 232, y = 314, z = -145},
     ["Pos - 6"] = {x = -618, y = 905, z = -535},
     Puncak = {x = -616, y = 916, z = -492}
 }
