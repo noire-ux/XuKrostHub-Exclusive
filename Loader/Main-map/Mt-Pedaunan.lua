@@ -7,22 +7,29 @@ local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
 -- checkpoint
 local CheckPoints = {
-    Spawn = {x = -24, y = 10, z = -104},
-    ["Pos - 1"] = {x = 623, y = 89, z = -356},
-    ["Pos - 2"] = {x = 932, y = 141, z = -249},
-    ["Pos - 3"] = {x = 1512, y = 189, z = -249.72},
-    ["Pos - 4"] = {x = 2638, y = 341, z = -234},
-    ["Pos - 5"] = {x = 2911, y = 341, z = -234},
-    ["Pos - 6"] = {x = 3235, y = 341, z = -215},
-    ["Pos - 7"] = {x = 3387, y = 538, z = -238},
-    ["Pos - 8"] = {x = 3432, y = 717, z = -222},
-    Puncak = {x = 3599, y = 780, z = -241}
+    Spawn = {x = 47, y = 12, z = 315},
+    ["Pos - 1"] = {x = -60, y = 56, z = -1012},
+    ["Pos - 2"] = {x = -519, y = 28, z = -1448},
+    ["Pos - 3"] = {x = -1097, y = 96, z = -1666},
+    ["Pos - 4"] = {x = -1384, y = 87, z = -2035},
+    ["Pos - 5"] = {x = -1960, y = 16, z = -2010},
+    ["Pos - 6"] = {x = -2385, y = 182, z = -2400},
+    ["Pos - 7"] = {x = -2685, y = 232, z = -2899},
+    ["Pos - 8"] = {x = -3020, y = 367, z = -3361},
+    ["Pos - 9"] = {x = -3703, y = 659, z = -4245},
+    ["Pos - 10"] = {x = -3900, y = 819, z = -5058},
+    ["Pos - 11"] = {x = -3724, y = 941, z = -5451},
+    ["Pos - 12"] = {x = -3142, y = 1276, z = -6441},
+    ["Pos - 13"] = {x = -2528, y = 1576, z = -6528},
+    ["Pos - 14"] = {x = -2291, y = 1724, z = -7814},
+    ["Pos - 15"] = {x = -2373, y = 2056, z = -9780},
+    Puncak = {x = -2441, y = 2132, z = -10296}
 }
 
 local isAutoTeleporting = false
 local isAutoRespawnEnabled = false
 local currentDelay = 3
-local teleportSequence = {"Spawn", "Pos - 1", "Pos - 2", "Pos - 3", "Pos - 4", "Pos - 5", "Pos - 6", "Pos - 7", "Pos - 8", "Puncak"}
+local teleportSequence = {"Spawn", "Pos - 1", "Pos - 2", "Pos - 3", "Pos - 4", "Pos - 5", "Pos - 6", "Pos - 7", "Pos - 8", "Pos - 9", "Pos - 10", "Pos - 11", "Pos - 12", "Pos - 13", "Pos - 14", "Pos - 15", "Puncak"}
 
 -- Color scheme
 local Colors = {
