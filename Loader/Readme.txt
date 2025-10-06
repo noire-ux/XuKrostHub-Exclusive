@@ -30,40 +30,32 @@ UI dibangun dengan tampilan clean, draggable, dan responsive, disertai animasi h
 1. Konfigurasi Awal
 Inisialisasi:
 HubName, CreatorText
-
 Tabel scripts berisi:
 Main Scripts – Script map utama
 Extra Tools – Tools tambahan & movement
 Own Script – Teleport Manager
 Console – Real-time log viewer
 Credits – Info creator
-
-
-
 2. Services & Variables
 Roblox Services: Players, TweenService, StarterGui, dll
 Variabel movement & teleport
 Original frame constants untuk UI konsisten
-
 3. Utility Functions
 notify() → sistem notifikasi
 httpGet() & fetchAndRun() → ambil & jalankan script
 copyToClipboard() → menyalin teks
 TeleportManager → save/load data posisi
-
 4. Movement Controls
 Atur WalkSpeed & JumpPower
 Infinity Jump toggle
 Presets: Default & Ngibrits
 Update real-time ke karakter
-
 5. Teleport Manager
 Save posisi dengan nama custom
 Auto-load & auto-save data lokal
 Teleport ke lokasi tersimpan
 Delete individual / clear all
 Auto-refresh list UI
-
 6. UI Build System
 Main frame draggable
 Header: title + creator text
@@ -71,14 +63,12 @@ Mini control bar (minimize / close)
 Tab system manual position
 Search bar filter scripts
 Content frame untuk tiap tab
-
 7. Tab Implementations
 Main Scripts: Scroll + search
 Extra Tools: Dropdown + toggles
 Own Script: Teleport Manager
 Console: Auto-scroll log output
 Credits: Info creator & copy buttons
-
 8. Bubble Minimize System
 Tombol XHUB bubble
 Klik → restore UI
