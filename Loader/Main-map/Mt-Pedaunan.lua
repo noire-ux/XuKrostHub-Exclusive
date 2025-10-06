@@ -403,75 +403,98 @@ local function TeleportToCheckpoint(name)
     return true
 end
 
--- teleport loop (LOOPING VERSION)
-local function AutoTeleport()
+-- NEW: Infinite teleport loop function
+local function InfiniteTeleportLoop()
     local loopCount = 0
     
-    while isAutoTeleporting and RunService.Heartbeat:Wait() do
+    while isAutoTeleporting do
         loopCount += 1
         GUI.statusText.Text = "Status: Loop " .. loopCount
         GUI.statusText.TextColor3 = Colors.Primary
         
+        -- Teleport melalui semua checkpoint dalam satu loop
         for _, checkpoint in ipairs(teleportSequence) do
             if not isAutoTeleporting then break end
             
-            -- Gunakan nama checkpoint langsung untuk status
             GUI.statusText.Text = "Status: Teleport ke " .. checkpoint .. " (Loop " .. loopCount .. ")"
             GUI.statusText.TextColor3 = Colors.Warning
-            TeleportToCheckpoint(checkpoint)
             
-            -- Cek jika sampai di Puncak dan Auto Respawn aktif
+            local success = TeleportToCheckpoint(checkpoint)
+            
+            if not success then
+                GUI.statusText.Text = "Status: Gagal teleport ke " .. checkpoint
+                GUI.statusText.TextColor3 = Colors.Danger
+                break
+            end
+            
+            -- Jika sampai di Puncak dan Auto Respawn aktif
             if checkpoint == "Puncak" and isAutoRespawnEnabled then
                 GUI.statusText.Text = "Status: Summit Reached, Auto respawn 2s (Loop " .. loopCount .. ")"
                 GUI.statusText.TextColor3 = Colors.Danger
-                task.wait(2)
                 
-                -- Respawn karakter
-                character:BreakJoints()
-                GUI.statusText.Text = "Status: Respawn success (Loop " .. loopCount .. ")"
-                task.wait(1)
-                
-                -- Tunggu karakter respawn
-                character = player.CharacterAdded:Wait()
-                humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-            else
-                -- Delay normal antar checkpoint
-                for _ = 1, currentDelay do
+                -- Tunggu sebentar sebelum respawn
+                for i = 1, 2 do
                     if not isAutoTeleporting then break end
-                    GUI.statusText.Text = "Status: Delay " .. _ .. "/" .. currentDelay .. "s " .. loopCount .. ")"
+                    GUI.statusText.Text = "Status: Respawn in " .. (3 - i) .. "s (Loop " .. loopCount .. ")"
                     task.wait(1)
+                end
+                
+                if isAutoTeleporting then
+                    -- Respawn karakter
+                    character:BreakJoints()
+                    GUI.statusText.Text = "Status: Respawn success (Loop " .. loopCount .. ")"
+                    
+                    -- Tunggu karakter respawn
+                    character = player.CharacterAdded:Wait()
+                    humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+                    
+                    -- Tunggu sedikit setelah respawn sebelum melanjutkan loop
+                    task.wait(2)
+                end
+            else
+                -- Delay normal antar checkpoint (kecuali checkpoint terakhir dengan auto respawn)
+                if checkpoint ~= "Puncak" or not isAutoRespawnEnabled then
+                    for i = 1, currentDelay do
+                        if not isAutoTeleporting then break end
+                        GUI.statusText.Text = "Status: Delay " .. i .. "/" .. currentDelay .. "s (Loop " .. loopCount .. ")"
+                        task.wait(1)
+                    end
                 end
             end
         end
         
-        -- Delay tambahan setelah menyelesaikan satu loop penuh
+        -- Jika masih aktif, loop akan berlanjut secara otomatis
         if isAutoTeleporting then
             GUI.statusText.Text = "Status: Loop " .. loopCount .. " selesai, memulai loop berikutnya..."
             GUI.statusText.TextColor3 = Colors.Secondary
-            task.wait(1)
+            task.wait(1) -- Delay kecil sebelum memulai loop berikutnya
         end
     end
     
-    if isAutoTeleporting then
-        GUI.statusText.Text = "Status: Auto Teleport Berhenti"
-        GUI.statusText.TextColor3 = Colors.Danger
-        GUI.toggleBtn.Text = "Start Auto Teleport"
-        GUI.toggleBtn.BackgroundColor3 = Colors.Secondary
-        isAutoTeleporting = false
-    end
+    -- Cleanup ketika loop dihentikan
+    GUI.statusText.Text = "Status: Auto Teleport Berhenti"
+    GUI.statusText.TextColor3 = Colors.Danger
+    GUI.toggleBtn.Text = "Start Auto Teleport"
+    GUI.toggleBtn.BackgroundColor3 = Colors.Secondary
 end
 
--- start stop
+-- start stop - menggunakan infinite loop sekarang
 GUI.toggleBtn.MouseButton1Click:Connect(function()
     if not isAutoTeleporting then
         isAutoTeleporting = true
         GUI.toggleBtn.Text = "Stop Auto Teleport"
         GUI.toggleBtn.BackgroundColor3 = Colors.Danger
-        task.spawn(AutoTeleport)
+        GUI.statusText.Text = "Status: Memulai infinite loop..."
+        GUI.statusText.TextColor3 = Colors.Warning
+        
+        -- Start the infinite loop
+        task.spawn(InfiniteTeleportLoop)
     else
         isAutoTeleporting = false
         GUI.toggleBtn.Text = "Start Auto Teleport"
         GUI.toggleBtn.BackgroundColor3 = Colors.Secondary
+        GUI.statusText.Text = "Status: Menghentikan loop..."
+        GUI.statusText.TextColor3 = Colors.Danger
     end
 end)
 
@@ -481,24 +504,38 @@ GUI.respawnToggleBtn.MouseButton1Click:Connect(function()
     if isAutoRespawnEnabled then
         GUI.respawnToggleBtn.Text = "Auto Respawn: ON"
         GUI.respawnToggleBtn.BackgroundColor3 = Colors.Secondary
+        GUI.statusText.Text = "Status: Auto Respawn diaktifkan"
+        GUI.statusText.TextColor3 = Colors.Secondary
     else
         GUI.respawnToggleBtn.Text = "Auto Respawn: OFF"
         GUI.respawnToggleBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 90)
+        GUI.statusText.Text = "Status: Auto Respawn dimatikan"
+        GUI.statusText.TextColor3 = Colors.Danger
+    end
+    
+    -- Reset status setelah beberapa detik
+    task.wait(2)
+    if isAutoTeleporting then
+        GUI.statusText.Text = "Status: Running infinite loop..."
+        GUI.statusText.TextColor3 = Colors.Warning
+    else
+        GUI.statusText.Text = "Status: Ready"
+        GUI.statusText.TextColor3 = Colors.Secondary
     end
 end)
 
--- Respawn event
+-- Respawn event handler
 player.CharacterAdded:Connect(function(newChar)
     character = newChar
     humanoidRootPart = newChar:WaitForChild("HumanoidRootPart")
-    GUI.statusText.Text = "Status: Respawn terdeteksi"
-    GUI.statusText.TextColor3 = Colors.Primary
     
-    -- Jika auto teleport aktif, lanjutkan setelah respawn
     if isAutoTeleporting then
-        GUI.statusText.Text = "Status: Respawn selesai, melanjutkan auto teleport..."
-        task.wait(2)
+        GUI.statusText.Text = "Status: Respawn terdeteksi, melanjutkan loop..."
+        GUI.statusText.TextColor3 = Colors.Primary
+    else
+        GUI.statusText.Text = "Status: Respawn terdeteksi"
+        GUI.statusText.TextColor3 = Colors.Primary
     end
 end)
 
-print("✅ XuKrost Hub Successfully loaded! have fun!")
+print("✅ XuKrost Hub Successfully loaded! Infinite loop mode activated!")
