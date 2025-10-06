@@ -1,160 +1,282 @@
-XUKROST HUB - ROBLOX SCRIPT HUB
-By noirexe (Enhanced + Tabs + Search + Manual Tab Position + Mini Control Bar + Bubble Minimize + Dividers + Console + Teleport Manager)
+🌀 XUKROST HUB – ROBLOX SCRIPT HUB
 
-================================================================================
-OVERVIEW
-================================================================================
-XuKrost Hub adalah script hub lengkap untuk Roblox yang menyediakan berbagai
-fitur dan script eksklusif. Interface dibuat dengan UI yang modern dan user-friendly.
+By noirexe
+(Enhanced + Tabs + Search + Manual Tab Position + Mini Control Bar + Bubble Minimize + Dividers + Console + Teleport Manager)
 
-FITUR UTAMA:
-✅ Enhanced GUI dengan design modern
-✅ System tabs dengan posisi manual
-✅ Search functionality untuk filtering script
-✅ Mini control bar (minimize/close)
-✅ Bubble minimize button
-✅ Dividers untuk pemisah visual
-✅ Console output real-time
-✅ Teleport Manager dengan save/load system
-✅ Movement controls (WalkSpeed, JumpPower, Infinity Jump)
-✅ Network Pause remover
 
-================================================================================
-STRUKTUR KODE
-================================================================================
+---
 
-1. KONFIGURASI AWAL
-   - Nama hub dan creator text
-   - Data scripts terorganisir dalam tabel:
-     * Main Scripts: Script utama untuk berbagai map
-     * Extra Tools: Movement controls, Fly, Remove Network Pause
-     * Own Script: Teleport Manager
-     * Console: Output console real-time
-     * Credits: Info creator dan contributor
+🔰 OVERVIEW
 
-2. SERVICES & VARIABLES
-   - Roblox services (Players, TweenService, StarterGui, dll)
-   - Movement controls variables
-   - Teleport Manager variables dengan system save/load
-   - Original frame size constant untuk konsistensi UI
+XuKrost Hub adalah Roblox Script Hub lengkap dan modern yang dirancang untuk memberikan pengalaman scripting yang cepat, fleksibel, dan interaktif.
+Dilengkapi dengan sistem tab dinamis, kontrol movement, console log real-time, hingga Teleport Manager dengan penyimpanan otomatis.
 
-3. UTILITY FUNCTIONS
-   - notify(): System notifikasi
-   - httpGet() & fetchAndRun(): HTTP requests dan execution
-   - copyToClipboard(): Clipboard operations
-   - Teleport functions: save/load data, position management
+UI dibangun dengan tampilan clean, draggable, dan responsive, disertai animasi halus dari TweenService.
 
-4. MOVEMENT CONTROLS SYSTEM
-   - WalkSpeed dan JumpPower adjustment
-   - Infinity jump toggle
-   - Presets (Default & Ngibrits)
-   - Real-time character updates
 
-5. TELEPORT MANAGER
-   - Save current position dengan nama custom
-   - Load/save data ke file
-   - Teleport ke saved locations
-   - Delete management
-   - Auto-refresh list
+---
 
-6. UI BUILD SYSTEM
-   - Main frame dengan dragging capability
-   - Header dengan title dan creator info
-   - Mini control bar (minimize/close)
-   - Tab system dengan posisi manual
-   - Search box untuk filtering
-   - Content frames untuk setiap tab
+⚙️ FITUR UTAMA
 
-7. TAB SPECIFIC IMPLEMENTATIONS
-   - Main Scripts: Scrolling frame dengan search filter
-   - Extra Tools: Dropdown movement controls + tools
-   - Own Script: Teleport Manager UI lengkap
-   - Console: Scrolling text output dengan auto-scroll
-   - Credits: Info creator dengan copy functionality
+✅ Enhanced GUI dengan desain modern & drag support
+✅ System Tabs dengan posisi manual
+✅ Search Box untuk filter script secara real-time
+✅ Mini Control Bar (minimize & close)
+✅ Bubble Button untuk minimize cepat
+✅ Visual Dividers antar elemen
+✅ Console Output real-time
+✅ Teleport Manager dengan sistem save/load otomatis
+✅ Movement Controls (WalkSpeed, JumpPower, Infinity Jump)
+✅ Network Pause Remover (auto-disable Roblox pause)
 
-8. BUBBLE MINIMIZE SYSTEM
-   - Minimize ke bubble button
-   - Restore dari bubble ke full UI
-   - Smooth animations dengan TweenService
 
-================================================================================
-FUNGSIONALITAS SPESIFIK
-================================================================================
+---
 
-A. MOVEMENT CONTROLS:
-   - Adjust WalkSpeed (16 default)
-   - Adjust JumpPower (50 default) 
-   - Infinity Jump toggle
-   - Preset configurations
-   - Real-time application ke character
+🧩 STRUKTUR KODE
 
-B. TELEPORT MANAGER:
-   - Save position dengan nama custom
-   - Data persistence dengan file saving
-   - Teleport ke saved locations
-   - Delete individual locations
-   - Clear all data
-   - Auto-load pada startup
+1. Konfigurasi Awal
 
-C. SEARCH SYSTEM:
-   - Real-time filtering di Main Scripts
-   - Case-insensitive search
-   - Dynamic UI updating
+Inisialisasi:
 
-D. CONSOLE SYSTEM:
-   - Real-time output logging
-   - Auto-scroll ke bottom
-   - Scrolling frame untuk content panjang
+HubName, CreatorText
 
-E. NETWORK PAUSE REMOVER:
-   - Remove network pause dialog
-   - CoreGui modification
+Tabel scripts berisi:
 
-================================================================================
-KEAMANAN & ERROR HANDLING
-================================================================================
+Main Scripts – Script map utama
 
-- Extensive use of pcall() untuk error handling
-- Safe HTTP requests dengan status checking
-- Validation untuk user input
-- Proper cleanup dan memory management
+Extra Tools – Tools tambahan & movement
 
-================================================================================
-PENGGUNAAN
-================================================================================
+Own Script – Teleport Manager
 
-1. Script akan auto-load saat di-execute
-2. GUI muncul di top-left screen
-3. Gunakan tabs untuk navigasi fitur:
-   - Main Scripts: Pilih map dan execute script
-   - Extra Tools: Movement controls dan utilities  
-   - Own Script: Teleport Manager
-   - Console: Lihat execution logs
-   - Credits: Info developer
+Console – Real-time log viewer
 
-4. Gunakan bubble button (XHUB) untuk minimize/restore
-5. Drag main frame atau bubble untuk reposition
+Credits – Info creator
 
-================================================================================
-CATATAN TEKNIS
-================================================================================
 
-- Menggunakan Roblox CoreGui untuk notifications
-- File saving untuk teleport data persistence
-- Smooth animations dengan TweenService
-- Responsive design dengan dynamic sizing
-- Comprehensive error handling throughout
 
-================================================================================
-KREDIT
-================================================================================
+
+2. Services & Variables
+
+Roblox Services: Players, TweenService, StarterGui, dll
+
+Variabel movement & teleport
+
+Original frame constants untuk UI konsisten
+
+
+3. Utility Functions
+
+notify() → sistem notifikasi
+
+httpGet() & fetchAndRun() → ambil & jalankan script
+
+copyToClipboard() → menyalin teks
+
+TeleportManager → save/load data posisi
+
+
+4. Movement Controls
+
+Atur WalkSpeed & JumpPower
+
+Infinity Jump toggle
+
+Presets: Default & Ngibrits
+
+Update real-time ke karakter
+
+
+5. Teleport Manager
+
+Save posisi dengan nama custom
+
+Auto-load & auto-save data lokal
+
+Teleport ke lokasi tersimpan
+
+Delete individual / clear all
+
+Auto-refresh list UI
+
+
+6. UI Build System
+
+Main frame draggable
+
+Header: title + creator text
+
+Mini control bar (minimize / close)
+
+Tab system manual position
+
+Search bar filter scripts
+
+Content frame untuk tiap tab
+
+
+7. Tab Implementations
+
+Main Scripts: Scroll + search
+
+Extra Tools: Dropdown + toggles
+
+Own Script: Teleport Manager
+
+Console: Auto-scroll log output
+
+Credits: Info creator & copy buttons
+
+
+8. Bubble Minimize System
+
+Tombol XHUB bubble
+
+Klik → restore UI
+
+Animasi halus (TweenService)
+
+
+
+---
+
+⚡ FUNGSIONALITAS SPESIFIK
+
+A. Movement Controls
+
+Ubah WalkSpeed (default: 16)
+
+Ubah JumpPower (default: 50)
+
+Aktifkan Infinity Jump
+
+Preset cepat (Default / Ngibrits)
+
+
+B. Teleport Manager
+
+Save posisi custom
+
+Persistent save (auto-load file)
+
+Teleport langsung ke lokasi tersimpan
+
+Delete individual / Clear All
+
+
+C. Search System
+
+Filter real-time di Main Scripts
+
+Case-insensitive
+
+Dynamic UI update
+
+
+D. Console System
+
+Output logging real-time
+
+Auto-scroll ke bawah
+
+Scrolling frame
+
+
+E. Network Pause Remover
+
+Hapus dialog Roblox “Network Pause”
+
+Gunakan CoreGui bypass dengan aman
+
+
+
+---
+
+🧠 KEAMANAN & ERROR HANDLING
+
+Penggunaan pcall() di semua fungsi penting
+
+Validasi input user
+
+Safe HTTP request (status checking)
+
+Memory management & cleanup UI
+
+Logging error di console
+
+
+
+---
+
+🚀 PENGGUNAAN
+
+1. Jalankan script, GUI akan muncul otomatis di top-left.
+
+
+2. Navigasi lewat tab:
+
+Main Scripts: Pilih & execute map
+
+Extra Tools: Pengaturan movement
+
+Own Script: Teleport Manager
+
+Console: Lihat logs
+
+Credits: Info creator
+
+
+
+3. Gunakan bubble button (XHUB) untuk minimize/restore.
+
+
+4. Drag main frame atau bubble untuk memindahkan posisi.
+
+
+
+
+---
+
+🧩 CATATAN TEKNIS
+
+Gunakan CoreGui untuk notifications
+
+File saving system dengan writefile() & readfile()
+
+Animasi halus TweenService
+
+Dynamic resizing untuk resolusi berbeda
+
+GUI modular dengan pembagian komponen
+
+
+
+---
+
+🧑‍💻 KREDIT
 
 Creator: noirexe
+
 YouTube: XuKrost OFC
-TikTok: noiree  
+
+TikTok: @noiree
+
 Instagram: @snn2ndd_
 
-Contributor: Natsyn
-Instagram: https://www.instagram.com/env.example?igsh=bThpNWM3dXJjc2hr
 
-Discord: https://discord.gg/RpYcMdzzwd
+Contributor: Natsyn
+
+Instagram: @env.example
+
+
+Discord: Join XuKrost Community
+
+
+---
+
+🧾 VERSI
+
+Build: 2.0 (Enhanced Edition)
+
+Last Updated: Oktober 2025
+
+Status: Stable
