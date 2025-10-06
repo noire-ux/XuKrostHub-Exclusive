@@ -5,7 +5,7 @@ local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
--- checkpoint
+-- checkpoint (TETAP SEMUA)
 local CheckPoints = {
     Spawn = {x = 778, y = 59, z = 650},
     ["Pos - 1"] = {x = 355, y = 74, z = 208},
@@ -29,6 +29,7 @@ local CheckPoints = {
 local isAutoTeleporting = false
 local isAutoRespawnEnabled = false
 local currentDelay = 3
+-- Urutan teleport TETAP untuk manual, tapi auto teleport langsung ke Puncak
 local teleportSequence = {"Spawn", "Pos - 1", "Pos - 2", "Pos - 3", "Pos - 4", "Pos - 5", "Pos - 6", "Pos - 7", "Pos - 8", "Pos - 9", "Pos - 10", "Pos - 11", "Pos - 12", "Pos - 13", "Pos - 14", "Pos - 15", "Puncak"}
 
 -- Color scheme
@@ -246,7 +247,7 @@ local function CreateGUI()
     padding.PaddingTop = UDim.new(0, 8)
     padding.PaddingBottom = UDim.new(0, 8)
 
-    -- manual teleport buttons dengan urutan yang benar
+    -- manual teleport buttons (SEMUA CHECKPOINT TETAP ADA)
     for _, checkpointName in ipairs(teleportSequence) do
         local checkpointData = CheckPoints[checkpointName]
         if checkpointData then
@@ -403,50 +404,64 @@ local function TeleportToCheckpoint(name)
     return true
 end
 
--- teleport loop
+-- teleport loop YANG DIUBAH: langsung ke Puncak dari Spawn
 local function AutoTeleport()
     while isAutoTeleporting and RunService.Heartbeat:Wait() do
-        for _, checkpoint in ipairs(teleportSequence) do
-            if not isAutoTeleporting then break end
+        -- Teleport langsung dari Spawn ke Puncak (tidak melalui semua checkpoint)
+        GUI.statusText.Text = "Status: Teleport langsung ke Puncak"
+        GUI.statusText.TextColor3 = Colors.Warning
+        
+        -- Pastikan di Spawn dulu
+        TeleportToCheckpoint("Spawn")
+        task.wait(1) -- Tunggu sebentar sebelum teleport ke Puncak
+        
+        -- Teleport langsung ke Puncak
+        TeleportToCheckpoint("Puncak")
+        
+        -- Cek jika sampai di Puncak dan Auto Respawn aktif
+        if isAutoRespawnEnabled then
+            GUI.statusText.Text = "Status: Summit Reached, Auto respawn 2s"
+            GUI.statusText.TextColor3 = Colors.Danger
+            task.wait(2)
             
-            -- Gunakan nama checkpoint langsung untuk status
-            GUI.statusText.Text = "Status: Teleport ke " .. checkpoint
-            GUI.statusText.TextColor3 = Colors.Warning
-            TeleportToCheckpoint(checkpoint)
+            -- Respawn karakter
+            character:BreakJoints()
+            GUI.statusText.Text = "Status: Respawn success, restarting loop..."
+            task.wait(1)
             
-            -- Cek jika sampai di Puncak dan Auto Respawn aktif
-            if checkpoint == "Puncak" and isAutoRespawnEnabled then
-                GUI.statusText.Text = "Status: Summit Reached, Auto respawn 2s"
-                GUI.statusText.TextColor3 = Colors.Danger
-                task.wait(2)
-                
-                -- Respawn karakter
-                character:BreakJoints()
-                GUI.statusText.Text = "Status: Respawn success"
+            -- Tunggu karakter respawn
+            character = player.CharacterAdded:Wait()
+            humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+            task.wait(1)
+        else
+            -- Jika auto respawn tidak aktif, tunggu delay dan stop loop
+            for _ = 1, currentDelay do
+                if not isAutoTeleporting then break end
                 task.wait(1)
-            else
-                for _ = 1, currentDelay do
-                    if not isAutoTeleporting then break end
-                    task.wait(1)
-                end
             end
+            break -- Keluar dari loop jika auto respawn tidak aktif
         end
     end
-    GUI.statusText.Text = "Status: Auto Teleport Berhenti"
-    GUI.statusText.TextColor3 = Colors.Danger
-    GUI.toggleBtn.Text = "Auto Teleport: ON"
-    GUI.toggleBtn.BackgroundColor3 = Colors.Secondary
+    
+    if not isAutoTeleporting then
+        GUI.statusText.Text = "Status: Auto Teleport Berhenti"
+        GUI.statusText.TextColor3 = Colors.Danger
+        GUI.toggleBtn.Text = "Start Auto Teleport"
+        GUI.toggleBtn.BackgroundColor3 = Colors.Secondary
+    end
 end
 
 -- start stop
 GUI.toggleBtn.MouseButton1Click:Connect(function()
     if not isAutoTeleporting then
         isAutoTeleporting = true
-        GUI.toggleBtn.Text = "Auto Teleport: OFF"
+        GUI.toggleBtn.Text = "Stop Auto Teleport"
         GUI.toggleBtn.BackgroundColor3 = Colors.Danger
         task.spawn(AutoTeleport)
     else
         isAutoTeleporting = false
+        GUI.toggleBtn.Text = "Start Auto Teleport"
+        GUI.toggleBtn.BackgroundColor3 = Colors.Secondary
     end
 end)
 
@@ -462,13 +477,23 @@ GUI.respawnToggleBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- Respawn event
+-- Respawn event - restart auto teleport jika sedang aktif
 player.CharacterAdded:Connect(function(newChar)
     character = newChar
     humanoidRootPart = newChar:WaitForChild("HumanoidRootPart")
-    GUI.statusText.Text = "Status: Respawn terdeteksi"
-    GUI.statusText.TextColor3 = Colors.Primary
-    isAutoTeleporting = false
+    
+    if isAutoTeleporting and isAutoRespawnEnabled then
+        GUI.statusText.Text = "Status: Respawn terdeteksi, melanjutkan loop..."
+        GUI.statusText.TextColor3 = Colors.Primary
+        task.wait(1)
+        -- Auto teleport akan melanjutkan loop secara otomatis
+    else
+        GUI.statusText.Text = "Status: Respawn terdeteksi"
+        GUI.statusText.TextColor3 = Colors.Primary
+        isAutoTeleporting = false
+        GUI.toggleBtn.Text = "Start Auto Teleport"
+        GUI.toggleBtn.BackgroundColor3 = Colors.Secondary
+    end
 end)
 
 print("✅ XuKrost Hub Successfully loaded! have fun!")
