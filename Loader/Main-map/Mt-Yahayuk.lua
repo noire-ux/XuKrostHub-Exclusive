@@ -17,9 +17,19 @@ local CheckPoints = {
     Puncak = {x = -616, y = 916, z = -492}
 }
 
+-- Delay khusus untuk setiap segment
+local SegmentDelays = {
+    ["Spawn -> Pos - 1"] = 5,
+    ["Pos - 1 -> Pos - 2"] = 10,
+    ["Pos - 2 -> Pos - 3"] = 18,
+    ["Pos - 3 -> Pos - 4"] = 11,
+    ["Pos - 4 -> Pos - 5"] = 38,
+    ["Pos - 5 -> Pos - 6"] = 55,
+    ["Pos - 6 -> Puncak"] = 3
+}
+
 local isAutoTeleporting = false
 local isAutoRespawnEnabled = false
-local currentDelay = 3
 local teleportSequence = {"Spawn", "Pos - 1", "Pos - 2", "Pos - 3", "Pos - 4", "Pos - 5", "Pos - 6", "Puncak"}
 
 -- Color scheme
@@ -56,6 +66,12 @@ local function autoTeleportToNearestCP()
         return true, nearestCP
     end
     return false, nil
+end
+
+-- Function untuk mendapatkan delay berdasarkan segment
+local function getSegmentDelay(currentCheckpoint, nextCheckpoint)
+    local segmentKey = currentCheckpoint .. " -> " .. nextCheckpoint
+    return SegmentDelays[segmentKey] or 3 -- Default 3 detik jika tidak ditemukan
 end
 
 -- frame
@@ -218,35 +234,18 @@ local function CreateGUI()
     respawnToggleBtn.Parent = leftPanel
     Instance.new("UICorner", respawnToggleBtn).CornerRadius = UDim.new(0, 8)
 
-    -- delay container dengan layout yang lebih baik
-    local delayContainer = Instance.new("Frame")
-    delayContainer.Size = UDim2.new(1, 0, 0, 40)
-    delayContainer.Position = UDim2.new(0, 0, 0, 94)
-    delayContainer.BackgroundTransparency = 1
-    delayContainer.Parent = leftPanel
-
-    local delayBox = Instance.new("TextBox")
-    delayBox.Size = UDim2.new(0, 80, 1, 0)
-    delayBox.Position = UDim2.new(0, 0, 0, 0)
-    delayBox.PlaceholderText = "Delay"
-    delayBox.Text = tostring(currentDelay)
-    delayBox.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
-    delayBox.TextColor3 = Colors.Text
-    delayBox.Font = Enum.Font.Gotham
-    delayBox.TextSize = 14
-    delayBox.Parent = delayContainer
-    Instance.new("UICorner", delayBox).CornerRadius = UDim.new(0, 6)
-
-    local delayLabel = Instance.new("TextLabel")
-    delayLabel.Size = UDim2.new(1, -90, 1, 0)
-    delayLabel.Position = UDim2.new(0, 90, 0, 0)
-    delayLabel.BackgroundTransparency = 1
-    delayLabel.Text = "Detik per checkpoint"
-    delayLabel.TextColor3 = Colors.DarkText
-    delayLabel.Font = Enum.Font.Gotham
-    delayLabel.TextSize = 13
-    delayLabel.TextXAlignment = Enum.TextXAlignment.Left
-    delayLabel.Parent = delayContainer
+    -- Info delay khusus
+    local delayInfo = Instance.new("TextLabel")
+    delayInfo.Size = UDim2.new(1, 0, 0, 40)
+    delayInfo.Position = UDim2.new(0, 0, 0, 94)
+    delayInfo.BackgroundTransparency = 1
+    delayInfo.Text = "XuKrost Hub Loop Function"
+    delayInfo.TextColor3 = Colors.DarkText
+    delayInfo.Font = Enum.Font.Gotham
+    delayInfo.TextSize = 11
+    delayInfo.TextXAlignment = Enum.TextXAlignment.Left
+    delayInfo.TextYAlignment = Enum.TextYAlignment.Top
+    delayInfo.Parent = leftPanel
 
     -- Right panel untuk manual teleport
     local rightPanel = Instance.new("Frame")
@@ -407,16 +406,6 @@ local function CreateGUI()
         bubbleBtn.Visible = false
     end)
 
-    -- Update delay ketika textbox berubah
-    delayBox.FocusLost:Connect(function(enterPressed)
-        local val = tonumber(delayBox.Text)
-        if val and val > 0 then
-            currentDelay = val
-        else
-            delayBox.Text = tostring(currentDelay)
-        end
-    end)
-
     return {
         toggleBtn = toggleBtn,
         respawnToggleBtn = respawnToggleBtn,
@@ -453,10 +442,10 @@ end
 -- teleport loop
 local function AutoTeleport()
     while isAutoTeleporting and RunService.Heartbeat:Wait() do
-        for _, checkpoint in ipairs(teleportSequence) do
+        for i, checkpoint in ipairs(teleportSequence) do
             if not isAutoTeleporting then break end
             
-            -- Gunakan nama checkpoint langsung untuk status
+            -- Teleport ke checkpoint saat ini
             GUI.statusText.Text = "Status: Teleport ke " .. checkpoint
             GUI.statusText.TextColor3 = Colors.Warning
             TeleportToCheckpoint(checkpoint)
@@ -472,9 +461,18 @@ local function AutoTeleport()
                 GUI.statusText.Text = "Status: Respawn success"
                 task.wait(1)
             else
-                for _ = 1, currentDelay do
-                    if not isAutoTeleporting then break end
-                    task.wait(1)
+                -- Hitung delay untuk segment berikutnya (jika ada)
+                local nextCheckpoint = teleportSequence[i + 1]
+                if nextCheckpoint then
+                    local segmentDelay = getSegmentDelay(checkpoint, nextCheckpoint)
+                    GUI.statusText.Text = "Status: Delay " .. segmentDelay .. "s (" .. checkpoint .. " → " .. nextCheckpoint .. ")"
+                    GUI.statusText.TextColor3 = Colors.Primary
+                    
+                    -- Tunggu sesuai delay segment
+                    for _ = 1, segmentDelay do
+                        if not isAutoTeleporting then break end
+                        task.wait(1)
+                    end
                 end
             end
         end
